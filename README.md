@@ -1,7 +1,7 @@
 Practical Machine Learning
 ---------------------------
 
-Author : Ashwini raj
+Author : Ashwini Raj
 Date   : 08/23/2014
 
 Instructions
