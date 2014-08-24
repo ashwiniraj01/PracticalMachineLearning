@@ -1,0 +1,78 @@
+Coursera - Practical Machine Learning Project Writeup
+=====================================================
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively.
+We write a predictive algorithm to analyse the activity of individual persons in the dataset.
+
+```{r}
+library(knitr)
+library(caret)
+library(randomForest)
+options(warn=-1)
+```
+## Data Modelling
+
+We first get rid of NAs and `#DIV/0!` to make the data error free while loading.
+
+```{r}
+train_data <- read.csv("pml-training.csv", na.strings=c("#DIV/0!") )
+test_data <- read.csv("pml-testing.csv", na.strings=c("#DIV/0!") )
+```
+
+## Cross Validation
+
+We do cross validation of data splitting the training data into training and testing data. Data partitioning is done using the `classe` variable.
+We used 60% for training and 40% for testing respectively.We cast the columns to be numeric.
+
+```{r}
+for(i in c(8:ncol(train_data)-1)) {train_data[,i] = as.numeric(as.character(train_data[,i]))}
+for(i in c(8:ncol(test_data)-1)) {test_data[,i] = as.numeric(as.character(test_data[,i]))}
+```
+
+We only take the columns with complete data and leave out the incomplete ones.
+
+```{r}
+train_subset <- colnames(train_data[colSums(is.na(train_data)) == 0])[-(1:7)]
+train_data2 <- train_data[train_subset]
+train_subset
+```
+
+
+```{r}
+d_cv <- createDataPartition(train_data2$classe, p=.60, list=FALSE)
+
+train_part <- train_data2[d_cv, ]
+test_part <- train_data2[-d_cv, ]
+```
+
+## Prediction Algorithm
+
+We used the randon forest model for prediction
+
+```{r}
+model.rf <- train(train_part[,-57],
+                       train_part$classe,
+                       tuneGrid=data.frame(mtry=3),
+                       trControl=trainControl(method="none")
+                       )
+```
+
+Estimate errors for training and test data
+```{r}
+err_train <- predict(model.rf, newdata=train_part)
+confusionMatrix(err_train,train_part$classe)
+
+
+err_test <- predict(model.rf, newdata=test_part)
+confusionMatrix(err_test,test_part$classe)
+```
+
+## Variable Importance
+
+```{r}
+plot(varImp(model.rf))
+```
+
+## Conclusion
+
+Random forest algorithm was pretty accurate in predicting the activities from data provided by the devices.
