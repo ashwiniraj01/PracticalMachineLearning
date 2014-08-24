@@ -22,11 +22,7 @@ train_data <- read.csv("pml-training.csv", na.strings = c("#DIV/0!"))
 test_data <- read.csv("pml-testing.csv", na.strings = c("#DIV/0!"))
 ```
 
-
-## Cross Validation
-
-We do cross validation of data splitting the training data into training and testing data. Data partitioning is done using the `classe` variable.
-We used 60% for training and 40% for testing respectively.We cast the columns to be numeric.
+We cast the columns to be numeric.
 
 
 ```r
@@ -37,7 +33,6 @@ for (i in c(8:ncol(test_data) - 1)) {
     test_data[, i] = as.numeric(as.character(test_data[, i]))
 }
 ```
-
 
 We only take the columns with complete data and leave out the incomplete ones.
 
@@ -70,6 +65,10 @@ train_subset
 ```
 
 
+## Cross Validation
+
+We do cross validation of data splitting the training data into training and testing data. Data partitioning is done using the `classe` variable.
+We used 60% for training and 40% for testing respectively.
 
 
 ```r
@@ -144,33 +143,33 @@ confusionMatrix(err_test, test_part$classe)
 ## 
 ##           Reference
 ## Prediction    A    B    C    D    E
-##          A 2231    0    0    0    0
-##          B    1 1518    3    0    0
-##          C    0    0 1365    1    0
-##          D    0    0    0 1285    2
-##          E    0    0    0    0 1440
+##          A 2232    0    0    0    0
+##          B    0 1518    3    0    0
+##          C    0    0 1365    0    0
+##          D    0    0    0 1286    0
+##          E    0    0    0    0 1442
 ## 
 ## Overall Statistics
 ##                                     
-##                Accuracy : 0.999     
-##                  95% CI : (0.998, 1)
+##                Accuracy : 1         
+##                  95% CI : (0.999, 1)
 ##     No Information Rate : 0.284     
 ##     P-Value [Acc > NIR] : <2e-16    
 ##                                     
-##                   Kappa : 0.999     
+##                   Kappa : 1         
 ##  Mcnemar's Test P-Value : NA        
 ## 
 ## Statistics by Class:
 ## 
 ##                      Class: A Class: B Class: C Class: D Class: E
-## Sensitivity             1.000    1.000    0.998    0.999    0.999
-## Specificity             1.000    0.999    1.000    1.000    1.000
-## Pos Pred Value          1.000    0.997    0.999    0.998    1.000
+## Sensitivity             1.000    1.000    0.998    1.000    1.000
+## Specificity             1.000    1.000    1.000    1.000    1.000
+## Pos Pred Value          1.000    0.998    1.000    1.000    1.000
 ## Neg Pred Value          1.000    1.000    1.000    1.000    1.000
 ## Prevalence              0.284    0.193    0.174    0.164    0.184
 ## Detection Rate          0.284    0.193    0.174    0.164    0.184
 ## Detection Prevalence    0.284    0.194    0.174    0.164    0.184
-## Balanced Accuracy       1.000    1.000    0.999    0.999    0.999
+## Balanced Accuracy       1.000    1.000    0.999    1.000    1.000
 ```
 
 

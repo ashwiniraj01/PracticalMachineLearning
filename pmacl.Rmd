@@ -18,17 +18,12 @@ We first get rid of NAs and `#DIV/0!` to make the data error free while loading.
 train_data <- read.csv("pml-training.csv", na.strings=c("#DIV/0!") )
 test_data <- read.csv("pml-testing.csv", na.strings=c("#DIV/0!") )
 ```
-
-## Cross Validation
-
-We do cross validation of data splitting the training data into training and testing data. Data partitioning is done using the `classe` variable.
-We used 60% for training and 40% for testing respectively.We cast the columns to be numeric.
+We cast the columns to be numeric.
 
 ```{r}
 for(i in c(8:ncol(train_data)-1)) {train_data[,i] = as.numeric(as.character(train_data[,i]))}
 for(i in c(8:ncol(test_data)-1)) {test_data[,i] = as.numeric(as.character(test_data[,i]))}
 ```
-
 We only take the columns with complete data and leave out the incomplete ones.
 
 ```{r}
@@ -37,6 +32,10 @@ train_data2 <- train_data[train_subset]
 train_subset
 ```
 
+## Cross Validation
+
+We do cross validation of data splitting the training data into training and testing data. Data partitioning is done using the `classe` variable.
+We used 60% for training and 40% for testing respectively.
 
 ```{r}
 d_cv <- createDataPartition(train_data2$classe, p=.60, list=FALSE)
