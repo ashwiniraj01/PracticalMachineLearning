@@ -3,7 +3,7 @@ library(knitr)
 
 # Run the file to generate md and html files
 knit('pmacl.Rmd', output = 'pmacl.md')
-knit('pmacl.Rmd', output = 'pmacl.md')
+knit('pmacl.Rmd', output = 'pmacl.html')
 
 # Run the function provided by coursera for submission
 
